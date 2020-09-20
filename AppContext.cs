@@ -13,7 +13,7 @@ namespace web_shell_dotnetcore
 
         public AppContext()
         {
-            Database.EnsureCreated();
+            //Database.EnsureCreated();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
