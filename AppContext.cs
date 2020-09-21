@@ -11,14 +11,10 @@ namespace web_shell_dotnetcore
     {
         public DbSet<PowerShellCM> PSCommands { get; set; }
 
-        public AppContext()
+        public AppContext(DbContextOptions<AppContext> options)
+            : base(options)
         {
             //Database.EnsureCreated();
-        }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=shellshistorydb;Trusted_Connection=True;");
         }
     }
 }
