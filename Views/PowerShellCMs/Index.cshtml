@@ -15,7 +15,7 @@
                 type: 'POST',
                 url: 'PowerShellCMs/Cmd',
                 contentType: 'application/x-www-form-urlencoded',
-                data: {cmd: "ls"},
+                data: { cmd: $("#cmd").val() },
                 beforeSend: function (xhr) {
                     xhr.setRequestHeader("XSRF-TOKEN",
                         $('input:hidden[name="__RequestVerificationToken"]').val());
@@ -43,10 +43,14 @@
 </script>
 
 <h1>Terminal's output</h1>
-<div class="container p-3 my-3 bg-dark text-white rounded">
-    
-    <p id="exev"></p>
-    
+<div class="container p-3 my-3 bg-dark rounded">
+
+    <pre>
+        <code id="exev" class="text-white">
+            Output will be here
+        </code>
+    </pre>
+
 </div>
 <p>Enter your command:</p>
 <span style="display: inline-flex !important;">
