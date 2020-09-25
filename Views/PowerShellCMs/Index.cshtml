@@ -8,7 +8,23 @@
     $(function () {
 
         function executeCmd() {
-            $("#exev").text("blya nu rabotay eb tvoyu mat")
+            
+            
+            $.ajax({
+
+                type: 'POST',
+                url: 'PowerShellCMs/Cmd',
+                contentType: 'application/x-www-form-urlencoded',
+                data: {cmd: "ls"},
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("XSRF-TOKEN",
+                        $('input:hidden[name="__RequestVerificationToken"]').val());
+                },
+                success: function (json) {
+                    $("#exev").text(json)
+                },
+
+            })
         }
 
         $("#submitCommand").click(function () {
@@ -34,7 +50,7 @@
 </div>
 <p>Enter your command:</p>
 <span style="display: inline-flex !important;">
-
+    @Html.AntiForgeryToken()
     <input id="cmd" class="form-control" type="text" style="width: 400px;" />
     <button id="submitCommand" class="btn btn-primary">Send</button>
 </span>

