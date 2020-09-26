@@ -30,7 +30,12 @@ namespace web_shell_dotnetcore.Controllers
         public JsonResult Cmd(string cmd)
         {
             string result, error;
-            //var escapedArgs = cmd.Replace("\"", "\\\"");
+            
+            _context.PSCommands.Add(new PowerShellCM()
+            {
+                Command = cmd
+            });
+            _context.SaveChanges();
             var process = new Process()
             {
                 StartInfo = new ProcessStartInfo
@@ -55,6 +60,10 @@ namespace web_shell_dotnetcore.Controllers
                 StatusCode = 200
             };            
         }
-
+        [HttpGet]
+        public JsonResult GetHistory()
+        {
+            return new JsonResult("");
+        }
     }
 }
