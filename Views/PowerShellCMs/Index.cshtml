@@ -5,11 +5,19 @@
 }
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script>
+    var array;
+    var count = 1;
     $(function () {
+        array = @Html.Raw(Json.Serialize(@ViewBag.history));
+        console.log(array);
+        function moveOnHistory(counter) {
+            count += counter;
+            return array[array.length].command
+        }
 
         function executeCmd() {
-            
-            
+
+
             $.ajax({
 
                 type: 'POST',
@@ -32,14 +40,23 @@
             executeCmd();
         })
 
-        $("#cmd").keypress(function (e) {
-            if (e.which == 13) {
-                executeCmd();
-                return false;
+        $("#cmd").keydown(function (e) {
+            switch (e.which) {
+
+                case 13:
+                    executeCmd();
+                    break;
+                case 38:
+                    $("#cmd").val(moveOnHistory(-1));
+                    break;
+                case 40:
+                    $("#cmd").val(moveOnHistory(1));
+                    break;
+
             }
         });
 
-        
+
     });
 </script>
 

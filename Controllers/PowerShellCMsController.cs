@@ -24,6 +24,7 @@ namespace web_shell_dotnetcore.Controllers
         // GET: PowerShellCMs
         public IActionResult Index()
         {
+            ViewBag.history = _context.PSCommands.ToList();
             return View();
         }
         [HttpPost]
