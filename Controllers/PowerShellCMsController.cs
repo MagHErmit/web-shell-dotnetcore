@@ -31,7 +31,7 @@ namespace web_shell_dotnetcore.Controllers
             {
                 l = l.GetRange(l.Count - _listSize, _listSize);
             }
-            ViewBag.history = l;
+            ViewBag.history = l.Select(e => e.Command).ToList();
             return View();
         }
         [HttpPost]

@@ -5,11 +5,10 @@
 }
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script>
-    var array = [];
+    var array;
     var count = 0;
     $(function () {
-        var arr = @Html.Raw(Json.Serialize(@ViewBag.history));
-        arr.forEach(e => array.push(e.command));
+        array = @Html.Raw(Json.Serialize(@ViewBag.history));
         //console.log(array);
 
         function moveOnHistory(counter) {
