@@ -45,11 +45,12 @@
                     $("#exev").text(json);
                     $("#cmd").val('');
                     $("#cmd").prop("disabled", false);
+                    $("#cmd").focus();
                 },
 
             })
             
-            $("#cmd").focus();
+            
         }
 
         $("#submitCommand").click(function () {

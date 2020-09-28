@@ -23,10 +23,10 @@ namespace web_shell_dotnetcore.Controllers
         }
 
         // GET: PowerShellCMs
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             
-            var l = _context.PSCommands.ToList();
+            var l = await _context.PSCommands.ToListAsync();
             if(l.Count > _listSize)
             {
                 l = l.GetRange(l.Count - _listSize, _listSize);
@@ -35,15 +35,14 @@ namespace web_shell_dotnetcore.Controllers
             return View();
         }
         [HttpPost]
-        public JsonResult Cmd(string cmd)
+        public async Task<JsonResult> Cmd(string cmd)
         {
-            if (cmd == "") return new JsonResult("");
             string result, error;
             _context.PSCommands.Add(new PowerShellCM()
             {
                 Command = cmd
             });
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             var process = new Process()
             {
                 StartInfo = new ProcessStartInfo
