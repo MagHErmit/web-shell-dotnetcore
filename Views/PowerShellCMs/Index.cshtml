@@ -44,11 +44,11 @@
                     console.log(json);
                     $("#exev").text(json);
                     $("#cmd").val('');
-                    
+                    $("#cmd").prop("disabled", false);
                 },
 
             })
-            $("#cmd").prop("disabled", false);
+            
             $("#cmd").focus();
         }
 
