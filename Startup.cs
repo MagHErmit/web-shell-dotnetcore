@@ -58,7 +58,7 @@ namespace web_shell_dotnetcore
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=PowerShellCMs}/{action=Index}");
             });
         }
     }
