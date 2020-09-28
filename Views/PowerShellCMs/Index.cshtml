@@ -5,19 +5,28 @@
 }
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script>
-    var array;
-    var count = 1;
+    var array = [];
+    var count = 0;
     $(function () {
-        array = @Html.Raw(Json.Serialize(@ViewBag.history));
+        var arr = @Html.Raw(Json.Serialize(@ViewBag.history));
+        arr.forEach(e => array.push(e.command));
         console.log(array);
+
         function moveOnHistory(counter) {
+            console.log(count);
+            if (count + counter > -1) {
+                count = 0;
+                return "";
+            }
             count += counter;
-            return array[array.length].command
+            return array[array.length + count];
         }
 
         function executeCmd() {
-
-
+            if ($("#cmd").val() == "") return;
+            $("#cmd").prop("disabled", true);
+            array.push($("#cmd").val());
+            count = 0;
             $.ajax({
 
                 type: 'POST',
@@ -25,15 +34,20 @@
                 contentType: 'application/x-www-form-urlencoded',
                 data: { cmd: $("#cmd").val() },
                 beforeSend: function (xhr) {
+
                     xhr.setRequestHeader("XSRF-TOKEN",
                         $('input:hidden[name="__RequestVerificationToken"]').val());
                 },
                 success: function (json) {
-                    $("#exev").text(json)
-                    $("#cmd").val('')
+                    console.log(json);
+                    $("#exev").text(json);
+                    $("#cmd").val('');
+                    
                 },
 
             })
+            $("#cmd").prop("disabled", false);
+            $("#cmd").focus();
         }
 
         $("#submitCommand").click(function () {
@@ -61,7 +75,7 @@
 </script>
 
 <h1>Terminal's output</h1>
-<div class="container p-3 my-3 bg-dark rounded">
+<div class="container p-3 my-3 bg-primary rounded">
 
     <pre>
         <code id="exev" class="text-white">
@@ -73,6 +87,6 @@
 <p>Enter your command:</p>
 <span style="display: inline-flex !important;">
     @Html.AntiForgeryToken()
-    <input id="cmd" class="form-control" type="text" style="width: 400px;" />
+    <input id="cmd" class="form-control" type="text" />
     <button id="submitCommand" class="btn btn-primary">Send</button>
 </span>

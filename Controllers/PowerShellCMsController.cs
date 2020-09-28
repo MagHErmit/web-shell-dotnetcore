@@ -14,6 +14,7 @@ namespace web_shell_dotnetcore.Controllers
 {
     public class PowerShellCMsController : Controller
     {
+        const int _listSize = 50; // count of rows that will be returned with View if db has more
         private readonly AppContext _context;
 
         public PowerShellCMsController(AppContext context)
@@ -24,14 +25,20 @@ namespace web_shell_dotnetcore.Controllers
         // GET: PowerShellCMs
         public IActionResult Index()
         {
-            ViewBag.history = _context.PSCommands.ToList();
+            
+            var l = _context.PSCommands.ToList();
+            if(l.Count > _listSize)
+            {
+                l = l.GetRange(l.Count - _listSize, _listSize);
+            }
+            ViewBag.history = l;
             return View();
         }
         [HttpPost]
         public JsonResult Cmd(string cmd)
         {
+            if (cmd == "") return new JsonResult("");
             string result, error;
-            
             _context.PSCommands.Add(new PowerShellCM()
             {
                 Command = cmd
@@ -55,16 +62,9 @@ namespace web_shell_dotnetcore.Controllers
             process.WaitForExit();
 
             result = result == "" ? error : result;
-            
-            return new JsonResult(result)
-            {
-                StatusCode = 200
-            };            
-        }
-        [HttpGet]
-        public JsonResult GetHistory()
-        {
-            return new JsonResult("");
+
+            return new JsonResult(result);
+                        
         }
     }
 }
