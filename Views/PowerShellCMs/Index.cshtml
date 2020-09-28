@@ -40,16 +40,17 @@
                     xhr.setRequestHeader("XSRF-TOKEN",
                         $('input:hidden[name="__RequestVerificationToken"]').val());
                 },
-                success: function (json) {
-                    console.log(json);
-                    $("#exev").text(json);
+                success: function (res) {
+                    //console.log(res);
+                    $("#exev").text(res);
                     $("#cmd").val('');
                     $("#cmd").prop("disabled", false);
+                    $("#cmd").focus();
                 },
 
             })
             
-            $("#cmd").focus();
+            
         }
 
         $("#submitCommand").click(function () {
