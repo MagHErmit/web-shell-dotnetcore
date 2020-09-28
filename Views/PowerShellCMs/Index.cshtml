@@ -10,15 +10,18 @@
     $(function () {
         var arr = @Html.Raw(Json.Serialize(@ViewBag.history));
         arr.forEach(e => array.push(e.command));
-        console.log(array);
+        //console.log(array);
 
         function moveOnHistory(counter) {
-            console.log(count);
-            if (count + counter > -1) {
+            
+            count += counter;
+            if (count > -1) {
                 count = 0;
                 return "";
+            } else if (-count > array.length) {
+                count -= counter;
             }
-            count += counter;
+            
             return array[array.length + count];
         }
 
